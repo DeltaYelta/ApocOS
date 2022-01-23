@@ -60,6 +60,11 @@ namespace ApocOS
                         Console.WriteLine(input.Remove(0, 5));
                         break;
                     }
+                case "cls":
+                    {
+                        Console.Clear();
+                        break;
+                    }
                 case "help":
                     {
                         Console.Write("Available commands:\nquityes: shutdown\ncat: cat program\ntime: displays current time and date\ncalc: calculator program\nhelp: this\n");
