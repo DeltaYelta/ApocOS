@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using Sys = Cosmos.System;
+using IO = System.IO;
 
 namespace ApocOS
 {
     public class Kernel : Sys.Kernel
     {
         public Sys.FileSystem.CosmosVFS fs;
-        public string current_directory = "0:\\";
+        public string cudr = @"0:\";
         protected override void BeforeRun()
         {
             fs = new Sys.FileSystem.CosmosVFS();
@@ -65,6 +66,24 @@ namespace ApocOS
                         Console.Clear();
                         break;
                     }
+                case "diskstat":
+                    {
+                        long dssp = fs.GetAvailableFreeSpace(@"0:\");
+                        string fstp = fs.GetFileSystemType(@"0:\");
+                        Console.WriteLine("FS type: " + fstp);
+                        Console.WriteLine("Free space: " + dssp);
+                        break;
+                    }
+                case "ls" or "dir":
+                    {
+                        var cudrfl = IO.Directory.GetFiles(cudr);
+                        foreach (var file in cudrfl)
+                        {
+                            var flcn = IO.File.ReadAllText(file);
+                            Console.WriteLine("\t", file, ":\t", flcn.Length);
+                        }
+                        break;
+                    }
                 case "help":
                     {
                         Console.Write("Available commands:\nquityes: shutdown\ncat: cat program\ntime: displays current time and date\ncalc: calculator program\nhelp: this\n");
@@ -78,7 +97,7 @@ namespace ApocOS
             }
         }
 
-        protected void CAT()
+        private void CAT()
         {
             string cat = Console.ReadLine();
             if (cat == "quit")
@@ -88,7 +107,7 @@ namespace ApocOS
             else { Console.WriteLine(cat); }
         }
 
-        protected void CALC()
+        private void static CALC()
         {
             string eq = Console.ReadLine();
             string[] eqa = eq.Split(" ");
