@@ -31,7 +31,6 @@ namespace ApocOS
                     }
                 case "cat":
                     {
-                        Console.Write("hi".Split(" ")[0]);
                         CAT();
                         break;
                     }
@@ -116,7 +115,12 @@ namespace ApocOS
                         Console.WriteLine("shutdown: shutdown");
                         Console.WriteLine("cat: cat program");
                         Console.WriteLine("time: displays current time and date");
-                        Console.WriteLine("calc: calculator program")
+                        Console.WriteLine("calc: calculator program");
+                        Console.WriteLine("echo: echoes user input to the console");
+                        Console.WriteLine("cls: clears screen");
+                        Console.WriteLine("diskstat: disk status (WIP)");
+                        Console.WriteLine("dir: smaller ls, just lists files");
+                        Console.WriteLine("ls: bigger dir, lists extensions and sizes");
                         Console.WriteLine("help: this");
                         break;
                     }
