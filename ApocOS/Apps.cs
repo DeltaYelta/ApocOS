@@ -6,4 +6,8 @@ namespace CosmosKernel1
     {
         
     }
+    public class NEF
+    {
+        
+    }
 }

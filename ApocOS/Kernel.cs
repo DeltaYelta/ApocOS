@@ -72,7 +72,7 @@ namespace ApocOS
                     }
 
                 default:
-                    Console.Write("ERR0x02\nBad command\n");
+                    Console.Write("ERR0x10\nBad command\n");
                     Console.Write("For a list of commands, type help.\n");
                     break;
             }
@@ -107,21 +107,21 @@ namespace ApocOS
                     calcans = x - y;
                     Console.WriteLine("value:" + calcans);
                     break;
-                case "x":
+                case "x" or "*":
                     calcans = x * y;
                     Console.WriteLine("value:" + calcans);
                     break;
                 case "/":
                     if (y == 0)
                     {
-                        Console.WriteLine("ERR0x04\nDivision by zero.");
+                        Console.WriteLine("ERR0x12\nDivision by zero.");
                         break;
                     }
                     calcans = x / y;
                     Console.WriteLine("value:" + calcans);
                     break;
                 default:
-                    Console.WriteLine("ERR0x03\nUnknown operation.");
+                    Console.WriteLine("ERR0x14\nUnknown operation.");
                     break;
             }
         }
