@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Sys = Cosmos.System;
 using IO = System.IO;
+using Apps;
 
 namespace ApocOS
 {
@@ -14,12 +15,14 @@ namespace ApocOS
         {
             fs = new Sys.FileSystem.CosmosVFS();
             Sys.FileSystem.VFS.VFSManager.RegisterVFS(fs);
+
             int build = 2
             ; Console.WriteLine("ApocOS Build " + build + " boot successful.");
         }
 
         protected override void Run()
         {
+            Util util = new Util();
             Console.Write("] ");
             string input = Console.ReadLine();
             string com = input.Split(" ")[0];
@@ -31,7 +34,7 @@ namespace ApocOS
                     }
                 case "cat":
                     {
-                        CAT();
+                        util.CAT();
                         break;
                     }
 
@@ -44,7 +47,7 @@ namespace ApocOS
 
                 case "calc":
                     {
-                        CALC();
+                        util.CALC();
                         break;
                     }
                 case "echo":
@@ -128,54 +131,6 @@ namespace ApocOS
                 default:
                     Console.Write("ERR0x10\nBad command\n");
                     Console.Write("For a list of commands, type help.\n");
-                    break;
-            }
-        }
-
-        private void CAT()
-        {
-            string cat = Console.ReadLine();
-            if (cat == "quit")
-            {
-                Run();
-            }
-            else { Console.WriteLine(cat); }
-        }
-
-        private void CALC()
-        {
-            string eq = Console.ReadLine();
-            string[] eqa = eq.Split(" ");
-            double x = double.Parse(eqa[0].ToString());
-            string op = eqa[1].ToString();
-            double y = double.Parse(eqa[2].ToString());
-            Console.WriteLine(op);
-            double calcans;
-            switch (op)
-            {
-                case "+":
-                    calcans = x + y;
-                    Console.WriteLine("value:" + calcans);
-                    break;
-                case "-":
-                    calcans = x - y;
-                    Console.WriteLine("value:" + calcans);
-                    break;
-                case "x" or "*":
-                    calcans = x * y;
-                    Console.WriteLine("value:" + calcans);
-                    break;
-                case "/":
-                    if (y == 0)
-                    {
-                        Console.WriteLine("ERR0x12\nDivision by zero.");
-                        break;
-                    }
-                    calcans = x / y;
-                    Console.WriteLine("value:" + calcans);
-                    break;
-                default:
-                    Console.WriteLine("ERR0x14\nUnknown operation.");
                     break;
             }
         }
