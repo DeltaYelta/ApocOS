@@ -66,22 +66,36 @@ namespace ApocOS
                         Console.WriteLine("Free space: " + dssp);
                         break;
                     }
-                case "ls" or "dir":
+                case "dir":
+                    {
+                        Console.WriteLine(IO.Directory.GetFiles(cudr));
+                        break;
+                    }
+                case "ls":
                     {
                         var cudrfl = IO.Directory.GetFiles(cudr);
                         try
                         {
+
                             foreach (var file in cudrfl)
                             {
-                                Console.WriteLine(file);
-                                //try
-                                //{
-                                //    Console.WriteLine("\t", file, ":\t", flcn.Length);
-                                //}
-                                //catch (Exception ex)
-                                //{
-                                 //   Console.WriteLine(ex.ToString());
-                                //}
+                                //Console.WriteLine(file);
+                                try
+                                {
+                                    string[] fnar = file.Split(".");
+                                    string entry = fnar[^1] + "|\t" + fnar[0] + ":";
+                                    Console.Write(entry);
+                                    for (int i = 0; i < 20 - entry.Length; i++)
+                                    {
+                                        Console.Write(" ");
+                                    }
+                                    Console.Write(entry.Length + "\n");
+
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.ToString());
+                                }
                             }
                         }
                         catch (Exception ex)
@@ -98,7 +112,12 @@ namespace ApocOS
                     }
                 case "help":
                     {
-                        Console.Write("Available commands:\nquityes: shutdown\ncat: cat program\ntime: displays current time and date\ncalc: calculator program\nhelp: this\n");
+                        Console.WriteLine("Available commands:");
+                        Console.WriteLine("shutdown: shutdown");
+                        Console.WriteLine("cat: cat program");
+                        Console.WriteLine("time: displays current time and date");
+                        Console.WriteLine("calc: calculator program")
+                        Console.WriteLine("help: this");
                         break;
                     }
 
