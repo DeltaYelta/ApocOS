@@ -9,7 +9,7 @@ namespace ApocOS
     public class Kernel : Sys.Kernel
     {
         public Sys.FileSystem.CosmosVFS fs;
-        public string cudr = @"0:\";
+        public string cudr = "0:\\";
         protected override void BeforeRun()
         {
             fs = new Sys.FileSystem.CosmosVFS();
@@ -20,21 +20,13 @@ namespace ApocOS
 
         protected override void Run()
         {
-            Console.Write("]");
+            Console.Write("] ");
             string input = Console.ReadLine();
             string com = input.Split(" ")[0];
             switch (com)
             {
-                case "quityes":
+                case "shutdown":
                     {
-                        Console.Write("FAT0x00\nUser shutdown");
-                        var timeg = new Random();
-                        double time = timeg.Next(5000, 10000);
-                        // Console.WriteLine(time);
-                        for (int i = 0; i < time; i++)
-                        {
-                            Console.Write("");
-                        }
                         throw new Exception();
                     }
                 case "cat":
@@ -77,10 +69,30 @@ namespace ApocOS
                 case "ls" or "dir":
                     {
                         var cudrfl = IO.Directory.GetFiles(cudr);
-                        foreach (var file in cudrfl)
+                        try
                         {
-                            var flcn = IO.File.ReadAllText(file);
-                            Console.WriteLine("\t", file, ":\t", flcn.Length);
+                            foreach (var file in cudrfl)
+                            {
+                                Console.WriteLine(file);
+                                //try
+                                //{
+                                //    Console.WriteLine("\t", file, ":\t", flcn.Length);
+                                //}
+                                //catch (Exception ex)
+                                //{
+                                 //   Console.WriteLine(ex.ToString());
+                                //}
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            if(ex.ToString() == "FileNotFoundException")
+                            {
+                                Console.WriteLine("No files in current directory.");
+                            } else
+                            {
+                                Console.WriteLine(ex.ToString());
+                            }
                         }
                         break;
                     }
@@ -107,7 +119,7 @@ namespace ApocOS
             else { Console.WriteLine(cat); }
         }
 
-        private void static CALC()
+        private void CALC()
         {
             string eq = Console.ReadLine();
             string[] eqa = eq.Split(" ");
