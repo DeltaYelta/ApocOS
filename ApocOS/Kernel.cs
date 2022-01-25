@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using Sys = Cosmos.System;
+using IO = System.IO;
 
 namespace ApocOS
 {
     public class Kernel : Sys.Kernel
     {
         public Sys.FileSystem.CosmosVFS fs;
-        public string current_directory = "0:\\";
+        public string cudr = "0:\\";
         protected override void BeforeRun()
         {
             fs = new Sys.FileSystem.CosmosVFS();
@@ -19,21 +20,13 @@ namespace ApocOS
 
         protected override void Run()
         {
-            Console.Write("]");
+            Console.Write("] ");
             string input = Console.ReadLine();
             string com = input.Split(" ")[0];
             switch (com)
             {
-                case "quityes":
+                case "shutdown":
                     {
-                        Console.Write("FAT0x00\nUser shutdown");
-                        var timeg = new Random();
-                        double time = timeg.Next(5000, 10000);
-                        // Console.WriteLine(time);
-                        for (int i = 0; i < time; i++)
-                        {
-                            Console.Write("");
-                        }
                         throw new Exception();
                     }
                 case "cat":
@@ -65,6 +58,44 @@ namespace ApocOS
                         Console.Clear();
                         break;
                     }
+                case "diskstat":
+                    {
+                        long dssp = fs.GetAvailableFreeSpace(@"0:\");
+                        string fstp = fs.GetFileSystemType(@"0:\");
+                        Console.WriteLine("FS type: " + fstp);
+                        Console.WriteLine("Free space: " + dssp);
+                        break;
+                    }
+                case "ls" or "dir":
+                    {
+                        var cudrfl = IO.Directory.GetFiles(cudr);
+                        try
+                        {
+                            foreach (var file in cudrfl)
+                            {
+                                Console.WriteLine(file);
+                                //try
+                                //{
+                                //    Console.WriteLine("\t", file, ":\t", flcn.Length);
+                                //}
+                                //catch (Exception ex)
+                                //{
+                                 //   Console.WriteLine(ex.ToString());
+                                //}
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            if(ex.ToString() == "FileNotFoundException")
+                            {
+                                Console.WriteLine("No files in current directory.");
+                            } else
+                            {
+                                Console.WriteLine(ex.ToString());
+                            }
+                        }
+                        break;
+                    }
                 case "help":
                     {
                         Console.Write("Available commands:\nquityes: shutdown\ncat: cat program\ntime: displays current time and date\ncalc: calculator program\nhelp: this\n");
@@ -78,7 +109,7 @@ namespace ApocOS
             }
         }
 
-        protected void CAT()
+        private void CAT()
         {
             string cat = Console.ReadLine();
             if (cat == "quit")
@@ -88,7 +119,7 @@ namespace ApocOS
             else { Console.WriteLine(cat); }
         }
 
-        protected void CALC()
+        private void CALC()
         {
             string eq = Console.ReadLine();
             string[] eqa = eq.Split(" ");
